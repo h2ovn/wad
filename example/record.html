@@ -1,0 +1,47 @@
+<html>
+<head>
+	<title>wad scales</title>
+	<!--<script src="../build/wad.min.js"></script>-->
+	<script src="../src/wad.js"></script>
+	<script src="../src/tuna.js"></script>
+	<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+
+	<a href="#" id="begin">Begin</a>
+	<a href="#" id="end">End</a>
+	<div id="log" ></div>
+<script type="text/javascript">
+	$('#end').click(function () {
+		tuner.stopUpdatingPitch();
+		stop = true;
+	});
+	$('#begin').click(function () {
+		tuner.add(voice);
+
+		voice.play(); // You must give your browser permission to access your microphone before calling play().
+
+		tuner.updatePitch() // The tuner is now calculating the pitch and note name of its input 60 times per second. These values are stored in tuner.pitch and tuner.noteName.
+		logPitch();
+		// If you sing into your microphone, your pitch will be logged to the console in real time.
+	});
+	var stop = false;
+	var voice = new Wad({ source: 'mic' }); // At this point, your browser will ask for permission to access your microphone.
+	var tuner = new Wad.Poly();
+
+	var logPitch = function () {
+		requestAnimationFrame(logPitch)
+		if (stop) {
+			return;
+		}
+		console.log(tuner.pitch, tuner.noteName, tuner.volume);
+		$("#log").html(tuner.pitch + "- " + tuner.noteName);
+	};
+	$(function () {
+
+	})
+	//tuner.stopUpdatingPitch(); // Stop calculating the pitch if you don't need to know it anymore.
+
+</script>
+</body>
+</html>
